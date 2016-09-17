@@ -3,10 +3,13 @@
 const express = require('express');
 const multer = require('multer');
 const upload = multer({ dest: './files' });
+const music = require('./music');
+const fs = require('fs');
 
 var app = express();
 
 app.post('/upload', upload.single('file'), function (req, res) {
+    music.processSong(fs.readFileSync(req.file.path));
     var returnData = {
         filename: req.file.filename,
         url: "https://giphy.com/gifs/animal-parrot-rRLAQHL9qHzNK",

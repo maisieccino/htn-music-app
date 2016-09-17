@@ -4,13 +4,14 @@
   "description": "Backend",
   "main": "index.js",
   "scripts": {
-      "start": "forever start index.js",
-      "stop": "forever stop index.js"
+    "start": "forever start index.js",
+    "stop": "forever stop index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.14.0",
-    "multer": "^1.2.0"
+    "multer": "^1.2.0",
+    "restler": "^3.4.0"
   }
 }
