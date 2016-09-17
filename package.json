@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "main": "build/app.js",
   "scripts": {
-    "start": "gulp clean && gulp build && node build/app.js | bunyan",
+    "start": "gulp clean && gulp build && forever start build/app.js | bunyan",
+    "stop": forever stop build/app.js,
     "test": "ava tests.js"
   },
   "keywords": [
