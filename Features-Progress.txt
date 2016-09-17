@@ -1,0 +1,21 @@
+Shit We Intend to Do and Components and Whatnot
+
+This webapp is intended to allow users through soundcloud to be introduced to other users with similar music tastes. Tinder for music???
+
+//   Server   //
+
+
+
+//   Database   //
+
+
+
+//    Web   //
+views:
+-player
+-authentication (soundcloud)
+-analysis results (similar people)
+-chat between matches
+
+
+//   Test Data Set/Generation   //
