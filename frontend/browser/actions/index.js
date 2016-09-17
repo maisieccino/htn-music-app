@@ -1,3 +1,4 @@
-export const getExcited = () => {
-  return { type: 'GET_EXCITED' }
+export const getAction = () => {
+  return { type: 'UPLOAD' }
 }
+
