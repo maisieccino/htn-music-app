@@ -12,11 +12,11 @@ app.post('/upload', upload.single('file'), function (req, res) {
         url: "https://giphy.com/gifs/animal-parrot-rRLAQHL9qHzNK",
         spiciness: 0.8
     };
-    return returnData;
+    return res.send(returnData);
 });
 
 app.get('/', function (req, res) {
-    return "Sup.";
+    return res.send("Sup.");
 });
 
 app.listen(3001, function () {
