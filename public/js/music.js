@@ -3,7 +3,6 @@
 var http = require('http');
 var fs = require('fs');
 var path = require('path');
-var Promise = require('bluebird');
 var needle = require('needle');
 var Step = require('step');
 var secrets = require('./secrets');
