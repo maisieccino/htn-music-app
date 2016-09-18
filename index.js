@@ -30,7 +30,7 @@ var config = {
 firebase.initializeApp(config);
 var db = firebase.database();
 var ref = db.ref("gif");
-var music = require('js/music.js'); 
+var music = require('./public/js/music'); 
 
 app.post('/upload', upload.single('file'), function (req, res, next) {
     var returnData = [];
