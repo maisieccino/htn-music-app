@@ -2,7 +2,17 @@
 
 var express = require('express');
 var multer = require('multer');
-var upload = multer({ dest: './files' });
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './files/')
+    },
+    filename: function (req, file, cb) {
+        require('crypto').pseudoRandomBytes(16, function (err, raw) {
+            cb(null, raw.toString('hex') + Date.now() + path.extname(file.originalname));
+        });
+    }
+});
+var upload = multer({ storage: storage });
 var http = require("http"); 
 var path = require('path');
 var fs = require('fs');
@@ -26,8 +36,8 @@ app.post('/upload', upload.single('file'), function (req, res, next) {
     var returnData = [];
     //need calculated tempo, normal range between 100-160bpm
     var musicTempo = 140; //default
-   music.processSong(req.file.path, function (data) {
 
+    music.processSong(req.file.path, function (tempo) {
 
         var startRange = musicTempo-5;
         var endRange = musicTempo+5;
@@ -40,11 +50,13 @@ app.post('/upload', upload.single('file'), function (req, res, next) {
                 tempo: snapshot.val().tempo
             });
         });
+
     setTimeout(function(){
         //Do Something with the ReturnData Array Here
         //I know this is sketchy just deal it'll work enough
 
     },3000);
+
     });
 });
 

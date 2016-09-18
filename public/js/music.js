@@ -2,17 +2,20 @@
 
 var http = require('http');
 var fs = require('fs');
+var path = require('path');
 var needle = require('needle');
 var Step = require('step');
 var secrets = require('./secrets');
 
 var sonicApiUpload = function(song, next) {
     var returnData;
-    needle.post('https://api.sonicAPI.com/file/upload',
+    var file = path.join(__dirname, '..', '..', song);
+    needle.post('https://api.sonicAPI.com/analyze/tempo',
         {
             access_id: secrets.sonicapi,
-            file: { file: song, content_type: 'multipart/form-data' },
-            format: 'json'
+            input_file: { file: file, content_type: 'multipart/form-data' },
+            format: 'json',
+            blocking: true
         },
         {
             multipart: true
@@ -21,8 +24,12 @@ var sonicApiUpload = function(song, next) {
 
 var processSong = function (song, next) {
     sonicApiUpload(song, function (err, res, body) {
-        console.log(body);
-        next(body);
+        if (!err) {
+            next(body.auftakt_result.overall_tempo);
+        }
+        else {
+            next;
+        }
     });
 };
 
