@@ -10,63 +10,128 @@ import 'jquery-ui/ui/core';
 import 'jquery-ui/ui/widgets/selectable';
 import { getAction } from '../actions';
 
-const mapStateToProps = (state) => {
-  return {
-    excitement: state.excitement
-  }
-}
-
-let Upload = ({ excitement, dispatch }) => {
-  return (
-    <div>
-      <h2>UPLOAD TEST{'!'.repeat(excitement)}</h2>
-      <button onClick={ () => dispatch(getAction()) }>Upload test</button>
-    </div>
-  );
-}
-
-Upload.propTypes = {
-  excitement: React.PropTypes.number.isRequired,
-  dispatch: React.PropTypes.func.isRequired
-}
-
-Upload = connect(mapStateToProps)(Upload);
-
-export default Upload;
-
-/*
-
-function readURL(input) {
-  if (input.files && input.files[0]) {
-
-    var reader = new FileReader();
-
-    reader.onload = function(e) {
-      $('.image-upload-wrap').hide();
-
-      $('.file-upload-image').attr('src', e.target.result);
-      $('.file-upload-content').show();
-
-      $('.image-title').html(input.files[0].name);
-    };
-
-    reader.readAsDataURL(input.files[0]);
-
-  } else {
-    removeUpload();
-  }
-}
-
-function removeUpload() {
-  $('.file-upload-input').replaceWith($('.file-upload-input').clone());
-  $('.file-upload-content').hide();
-  $('.image-upload-wrap').show();
-}
-$('.image-upload-wrap').bind('dragover', function () {
-    $('.image-upload-wrap').addClass('image-dropping');
-  });
-  $('.image-upload-wrap').bind('dragleave', function () {
-    $('.image-upload-wrap').removeClass('image-dropping');
+$('.upload-btn').on('click', () => {
+    $('#upload-input').click();
+    $('.progress-bar').text('0%');
+    $('.progress-bar').width('0%');
 });
-*/
 
+$('#upload-input').on('change', function(){
+
+  const files = $(this).get(0).files;
+
+  if (files.length > 0){
+    // create a FormData object which will be sent as the data payload in the
+    // AJAX request
+    const formData = new FormData();
+
+    // loop through all the selected files and add them to the formData object
+    for (const file of files) {
+      // add the files to formData object for the data payload
+      formData.append('uploads[]', file, file.name);
+    }
+
+    $.ajax({
+      url: '/upload',
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success(data) {
+          console.log(`upload successful!\n${data}`);
+      },
+      xhr() {
+        // create an XMLHttpRequest
+        const xhr = new XMLHttpRequest();
+
+        // listen to the 'progress' event
+        xhr.upload.addEventListener('progress', evt => {
+
+          if (evt.lengthComputable) {
+            // calculate the percentage of upload completed
+            let percentComplete = evt.loaded / evt.total;
+            percentComplete = parseInt(percentComplete * 100);
+
+            // update the Bootstrap progress bar with the new percentage
+            $('.progress-bar').text(`${percentComplete}%`);
+            $('.progress-bar').width(`${percentComplete}%`);
+
+            // once the upload reaches 100%, set the progress bar text to done
+            if (percentComplete === 100) {
+              $('.progress-bar').html('Done');
+            }
+
+          }
+
+        }, false);
+
+        return xhr;
+      }
+    });
+  }
+});
+
+
+/*$('.upload-btn').on('click', function (){
+    $('#upload-input').click();
+    $('.progress-bar').text('0%');
+    $('.progress-bar').width('0%');
+});
+
+$('#upload-input').on('change', function(){
+
+  var files = $(this).get(0).files;
+
+  if (files.length > 0){
+    // create a FormData object which will be sent as the data payload in the
+    // AJAX request
+    var formData = new FormData();
+
+    // loop through all the selected files and add them to the formData object
+    for (var i = 0; i < files.length; i++) {
+      var file = files[i];
+
+      // add the files to formData object for the data payload
+      formData.append('uploads[]', file, file.name);
+    }
+
+    $.ajax({
+      url: '/upload',
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(data){
+          console.log('upload successful!\n' + data);
+      },
+      xhr: function() {
+        // create an XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+
+        // listen to the 'progress' event
+        xhr.upload.addEventListener('progress', function(evt) {
+
+          if (evt.lengthComputable) {
+            // calculate the percentage of upload completed
+            var percentComplete = evt.loaded / evt.total;
+            percentComplete = parseInt(percentComplete * 100);
+
+            // update the Bootstrap progress bar with the new percentage
+            $('.progress-bar').text(percentComplete + '%');
+            $('.progress-bar').width(percentComplete + '%');
+
+            // once the upload reaches 100%, set the progress bar text to done
+            if (percentComplete === 100) {
+              $('.progress-bar').html('Done');
+            }
+
+          }
+
+        }, false);
+
+        return xhr;
+      }
+    });
+
+  }
+});*/
