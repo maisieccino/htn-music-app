@@ -1,36 +1,29 @@
 "use strict";
 
 var http = require('http');
-var rest = require('restler');
+var fs = require('fs');
+var needle = require('needle');
 var Step = require('step');
-var secrets = require('../secrets');
+var secrets = require('./secrets');
 
-var sonicApiUpload = function(song) {
+var sonicApiUpload = function(song, next) {
     var returnData;
-    Step(function () {
-        rest.post('https://api.sonicAPI.com/file/upload', {
-            multipart: true,
-            data: {
-                'access_id': secrets.sonicapi,
-                'file': song
-        }}).on('complete', this);
+    needle.post('https://api.sonicAPI.com/file/upload',
+        {
+            access_id: secrets.sonicapi,
+            file: { file: song, content_type: 'multipart/form-data' },
+            format: 'json'
         },
-        function (result) {
-            console.log("you reposted in the wrong enighbourhood");
-            console.log(result? result : "nowt");
-            return result;
-        },
-        function (result) {
-            console.log("???");
-        });
-
-    return returnData;
+        {
+            multipart: true
+        }, next);
 };
 
-var processSong = function (song) {
-    var data = sonicApiUpload(song);
-    console.log(data);
-    return data;
+var processSong = function (song, next) {
+    sonicApiUpload(song, function (err, res, body) {
+        console.log(body);
+        next(body);
+    });
 };
 
 module.exports = {
