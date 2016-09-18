@@ -11,8 +11,12 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.14.0",
+    "firebase": "*",
+    "http": "*",
     "multer": "^1.2.0",
+    "path": "*",
     "restler": "^3.4.0",
+    "step": "*",
     "unirest": "^0.5.1"
   }
 }
