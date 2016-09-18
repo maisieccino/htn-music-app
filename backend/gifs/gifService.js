@@ -19,7 +19,7 @@ var ref = db.ref("gif");
 //   Add/process gifs to db   //
 giphy.search({
     q: 'dancing',
-    //limit: 100,
+    limit: 100,
     rating: 'g'
 }, function(err, res) { //tempo in bpm
 	res.data.forEach(function(gif){
@@ -30,7 +30,7 @@ giphy.search({
 			height: gif.images.original.height,
 			width: gif.images.original.width,
 			spicy_rating: Math.floor((Math.random() * 5)),
-			tempo: Math.floor((Math.random() * 40)+40)
+			tempo: Math.floor((Math.random() * 60)+100)
 		}, function(err){
 			if(err){
 				console.log(err);
@@ -41,7 +41,10 @@ giphy.search({
 });
 
 //   Example pulling gifs by tempo   //
-// ref.orderByChild("tempo").startAt(40).endAt(50).on("child_added", function(snapshot) {
+// var musicTempo = 140;
+// var startRange = musicTempo-5;
+// var endRange = musicTempo+5;
+// ref.orderByChild("tempo").startAt(startRange).endAt(engRange).on("child_added", function(snapshot) {
 //   console.log(snapshot.key + " has a tempo of " + snapshot.val().tempo );
 // });
 
