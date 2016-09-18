@@ -9,14 +9,13 @@
   <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <link href="style.css" rel="stylesheet">
-
-  <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="js/upload.js"></script>
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 <body>
-
+  <div class="dots-loader"></div>
   <div class="container">
+    
     <div class="row">
       <div class="col-xs-12">
         <div class="panel panel-default">
@@ -31,9 +30,22 @@
         </div>
       </div>
     </div>
+    
+    <div style="width:200px;height:200px;overflow:hidden;" >  
+    <img id ='resGif' width="200px" height="auto">
+    <div id = 'rating'>
+     <img id = 'spiciness'>
+    </div>
+  
   </div>
 
-  <input id="upload-input" type="file" name="uploads[]" multiple="multiple"></br>
- 
+  <input id="upload-input" type="file"></br>
+
+  <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="js/upload.js"></script>
+
+  
 </body>
 </html>

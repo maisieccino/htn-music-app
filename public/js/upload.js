@@ -12,7 +12,7 @@ $('#upload-input').on('change', function(){
   //if (files.length > 0){
     // create a FormData object which will be sent as the data payload in the
     // AJAX request
-    var formData = new FormData($('#upload-input')[0]);
+    var formData = new FormData();
 
     // // loop through all the selected files and add them to the formData object
     // for (var i = 0; i < files.length; i++) {
@@ -21,6 +21,7 @@ $('#upload-input').on('change', function(){
     //   // add the files to formData object for the data payload
     //   formData.append('uploads[]', file, file.name);
     // }
+
     formData.append('file', files[0]);
     $.ajax({
       url: '/upload',
@@ -28,8 +29,13 @@ $('#upload-input').on('change', function(){
       data: formData,
       processData: false,
       contentType: false,
+      dataType: "JSON",
       success: function(data){
-          console.log('upload successful!\n' + data);
+        $('.dots-loader').hide();
+        $('#resGif').attr("height", data.height);
+          $('#resGif').attr("width", data.width);
+          $('#resGif').attr("src", data.url);
+          $('#spiciness').attr("src", "images/l"+data.spiciness+".png");
       },
       xhr: function() {
         // create an XMLHttpRequest
