@@ -20,29 +20,32 @@ var config = {
 firebase.initializeApp(config);
 var db = firebase.database();
 var ref = db.ref("gif");
-//var music = require('js/music.js'); 
+var music = require('js/music.js'); 
 
 app.post('/upload', upload.single('file'), function (req, res, next) {
-    var returnData;
+    var returnData = [];
     //need calculated tempo, normal range between 100-160bpm
     var musicTempo = 140; //default
-    //music.processSong(req.file.path, function (data) {
-        //returnData = data;
+   music.processSong(req.file.path, function (data) {
+
 
         var startRange = musicTempo-5;
         var endRange = musicTempo+5;
-        ref.orderByChild("tempo").startAt(startRange).endAt(endRange).on("child_added", function(snapshot) {
-            console.log(snapshot.key);
-            returnData = {
+        ref.startAt(startRange).endAt(endRange).on("child_added", function(snapshot) {
+            returnData.push({
                 id: snapshot.key,
                 url: snapshot.val().url,
                 frames: snapshot.val().frames,
                 spiciness: snapshot.val().spicy_rating,
                 tempo: snapshot.val().tempo
-            };
-
+            });
         });
-   // });
+    setTimeout(function(){
+        //Do Something with the ReturnData Array Here
+        //I know this is sketchy just deal it'll work enough
+
+    },3000);
+    });
 });
 
 app.post('/upload', function (req, res) {
@@ -57,5 +60,5 @@ app.get('/', function (req, res) {
 });
 
 http.createServer(app).listen(80, function () {
-    console.log('sick');
+    console.log('listening on 80');
 });
