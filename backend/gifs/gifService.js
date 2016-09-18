@@ -46,7 +46,7 @@ giphy.search({
 // var musicTempo = 140;
 // var startRange = musicTempo-5;
 // var endRange = musicTempo+5;
-// ref.orderByChild("tempo").startAt(startRange).endAt(engRange).on("child_added", function(snapshot) {
+// ref.orderByChild("tempo").startAt(startRange).endAt(endRange).on("child_added", function(snapshot) {
 //   console.log(snapshot.key + " has a tempo of " + snapshot.val().tempo );
 // });
 
