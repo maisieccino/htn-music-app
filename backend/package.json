@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.14.0",
     "multer": "^1.2.0",
-    "restler": "^3.4.0"
+    "restler": "^3.4.0",
+    "step": "0.0.6"
   }
 }
