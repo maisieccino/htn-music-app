@@ -84,8 +84,8 @@ body {
   background-color: #4791D2;*/
   text-align: center;
   font-family: 'Raleway', sans-serif;
-  animation: colorchange 50s; 
-  -webkit-animation: colorchange 50s; 
+  animation: colorchange 50s infinite; 
+  -webkit-animation: colorchange 50s infinite; 
 }
 
 @keyframes colorchange
