@@ -1,0 +1,10 @@
+{
+  "name": "spicyGifMeme-gifService",
+  "version": "0.0.1",
+  "description": "Spicy",
+  "dependencies": {
+    "ffmpeg": "*",
+    "fluent-ffmpeg": "~2.0.0-rc1",
+    "giphy-api": "*"
+  }
+}
