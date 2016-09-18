@@ -23,7 +23,6 @@ var ref = db.ref("gif");
 //var music = require('js/music.js'); 
 
 app.post('/upload', upload.single('file'), function (req, res, next) {
-    console.log()
     var returnData;
     //need calculated tempo, normal range between 100-160bpm
     var musicTempo = 140; //default
@@ -32,7 +31,7 @@ app.post('/upload', upload.single('file'), function (req, res, next) {
 
         var startRange = musicTempo-5;
         var endRange = musicTempo+5;
-        ref.orderByChild("tempo").startAt(startRange).endAt(engRange).on("child_added", function(snapshot) {
+        ref.orderByChild("tempo").startAt(startRange).endAt(endRange).on("child_added", function(snapshot) {
             console.log(snapshot.key);
             returnData = {
                 id: snapshot.key,
