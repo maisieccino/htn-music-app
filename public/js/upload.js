@@ -32,7 +32,9 @@ $('#upload-input').on('change', function(){
       dataType: "JSON",
       success: function(data){
         $('.dots-loader').hide();
-        $('#resGif').attr("height", data.height);
+        $('#resGif').parent().attr("height", data.height);
+          $('#resGif').parent().attr("width", data.width);
+          $('#resGif').attr("height", data.height);
           $('#resGif').attr("width", data.width);
           $('#resGif').attr("src", data.url);
           $('#spiciness').attr("src", "images/l"+data.spiciness+".png");

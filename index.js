@@ -30,30 +30,43 @@ var config = {
 firebase.initializeApp(config);
 var db = firebase.database();
 var ref = db.ref("gif");
-var music = require('./public/js/music'); 
+//var music = require('./public/js/music'); 
 
 app.post('/upload', upload.single('file'), function (req, res, next) {
     //need calculated tempo, normal range between 100-160bpm
-    var musicTempo = 140; //default
+    var musicTempo = 120; //default
 
-   music.processSong(req.file.path, function (tempo) {
+   //music.processSong(req.file.path, function (tempo) {
         var startRange = musicTempo-5;
         var endRange = musicTempo+5;
+        var returnData ={
+            id: "26BRIhmJu160i924E",
+                url: "http://media1.giphy.com/media/26BRIhmJu160i924E/giphy.gif",
+                width: 500,
+                height: 249,
+                frames: 68,
+                spiciness: 3,
+                tempo: 86 
+        }
         ref.orderByChild("tempo").startAt(startRange).endAt(endRange).on("child_added", function(snapshot) {
-            console.log(snapshot.key);
-            var returnData= {
+            //console.log(snapshot.key);
+               returnData= {
                 id: snapshot.key,
                 url: snapshot.val().url,
+                width: snapshot.val().width,
+                height: snapshot.val().height,
                 frames: snapshot.val().frames,
                 spiciness: snapshot.val().spicy_rating,
                 tempo: snapshot.val().tempo
             };
-            res.send(returnData);
+           ref.off("child_added");
         });
-
+        setTimeout(function(){
+            res.send(returnData);
+        }, 2000);
     
     });
-});
+//});
 
 app.post('/upload', function (req, res) {
     return res.status(400).send({
