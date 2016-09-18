@@ -2,7 +2,17 @@
 
 var express = require('express');
 var multer = require('multer');
-var upload = multer({ dest: './files' });
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './files/')
+    },
+    filename: function (req, file, cb) {
+        require('crypto').pseudoRandomBytes(16, function (err, raw) {
+            cb(null, raw.toString('hex') + Date.now() + path.extname(file.originalname));
+        });
+    }
+});
+var upload = multer({ storage: storage });
 var http = require("http"); 
 var path = require('path');
 var fs = require('fs');
@@ -20,14 +30,13 @@ var config = {
 firebase.initializeApp(config);
 var db = firebase.database();
 var ref = db.ref("gif");
-//var music = require('js/music.js'); 
+var music = require('./public/js/music.js'); 
 
 app.post('/upload', upload.single('file'), function (req, res, next) {
     var returnData;
     //need calculated tempo, normal range between 100-160bpm
     var musicTempo = 140; //default
-    //music.processSong(req.file.path, function (data) {
-        //returnData = data;
+    music.processSong(req.file.path, function (tempo) {
 
         var startRange = musicTempo-5;
         var endRange = musicTempo+5;
@@ -42,7 +51,7 @@ app.post('/upload', upload.single('file'), function (req, res, next) {
             };
 
         });
-   // });
+    });
 });
 
 app.post('/upload', function (req, res) {
