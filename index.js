@@ -33,30 +33,25 @@ var ref = db.ref("gif");
 var music = require('js/music.js'); 
 
 app.post('/upload', upload.single('file'), function (req, res, next) {
-    var returnData = [];
     //need calculated tempo, normal range between 100-160bpm
     var musicTempo = 140; //default
 
-    music.processSong(req.file.path, function (tempo) {
-
+   music.processSong(req.file.path, function (tempo) {
         var startRange = musicTempo-5;
         var endRange = musicTempo+5;
-        ref.startAt(startRange).endAt(endRange).on("child_added", function(snapshot) {
-            returnData.push({
+        ref.orderByChild("tempo").startAt(startRange).endAt(endRange).on("child_added", function(snapshot) {
+            console.log(snapshot.key);
+            var returnData= {
                 id: snapshot.key,
                 url: snapshot.val().url,
                 frames: snapshot.val().frames,
                 spiciness: snapshot.val().spicy_rating,
                 tempo: snapshot.val().tempo
-            });
+            };
+            res.send(returnData);
         });
 
-    setTimeout(function(){
-        //Do Something with the ReturnData Array Here
-        //I know this is sketchy just deal it'll work enough
-
-    },3000);
-
+    
     });
 });
 
