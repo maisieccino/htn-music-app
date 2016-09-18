@@ -18,65 +18,46 @@ var db = firebase.database();
 var ref = db.ref("gif");
 
 
-//   Add/process gifs to db   //
 giphy.search({
     q: 'dancing',
     limit: 100,
     rating: 'g'
-}, function(err, res) { //tempo in bpm
+}, function(err, res) {
 	res.data.forEach(function(gif){
+		ffmpeg(gif.images.original.url)
+		.on('error', function(err) {
+	    console.log('An error occurred: ' + err.message);
+		  })
+		  .on('end', function() {
+		    console.log('Processing finished !');
+		  })		
+		.screenshots({
+			count: gif.images.original.frames-1;
+		    filename: 'process/thumbnail_'+gif.id+'.png',
+		    folder: __dirname,
+		    size: gif.images.original.width+"x"+gif.images.original.height;
+		});
 		ref.child(gif.id).set({
 			id: gif.id,
 			url: gif.images.original.url,
 			frames: gif.images.original.frames,
 			height: gif.images.original.height,
 			width: gif.images.original.width,
-			spicy_rating: Math.floor((Math.random() * 5)),
-			tempo: Math.floor((Math.random() * 60)+100)
+			spicy_rating: Math.floor((Math.random() * 5.5)),
+			tempo: calculateTempo()
 		}, function(err){
 			if(err){
 				console.log(err);
 			}
 		});
-		
 	});
-});
-
-//   Example pulling gifs by tempo   //
-// var musicTempo = 140;
-// var startRange = musicTempo-5;
-// var endRange = musicTempo+5;
-// ref.orderByChild("tempo").startAt(startRange).endAt(endRange).on("child_added", function(snapshot) {
-//   console.log(snapshot.key + " has a tempo of " + snapshot.val().tempo );
-// });
-
-//   For Image Processing   //
-// giphy.random({
-//     q: 'dancing',
-//     rating: 'g'
-// }, function(err, res) {
-// 	ffmpeg('output.gif')
-// 	.on('error', function(err) {
-//     console.log('An error occurred: ' + err.message);
-// 	  })
-// 	  .on('end', function() {
-// 	    console.log('Processing finished !');
-// 	  })		
-		//.screenshots({
-			//count: (res.data.image_frames-1)
-
-
-			//count: 2
-		    // timestamps: [0.5, 3, 5]
-		    // filename: 'thumbnail-at-%s-seconds.png',
-		    // folder: __dirname,
-		    // size: '320x240'
-		// });
 		//decimate filter, will show duplicate frames?
 		//thumbnails() to get frames to process? Warning, says does not work on imput streams
 
     //useful res.data: id, image_url, image_frames, image_width, image_height
-// });
+});
+function calculateTempo(){
+}
 
 
 
