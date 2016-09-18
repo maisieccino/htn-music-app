@@ -14,28 +14,23 @@ var firebase = require('firebase');
     messagingSenderId: "694275757511"
   };
 firebase.initializeApp(config);
-
-
 var db = firebase.database();
 var ref = db.ref("gif");
-
-
-
+//   Add/process gifs to db   //
 giphy.search({
     q: 'dancing',
     //limit: 100,
     rating: 'g'
 }, function(err, res) { //tempo in bpm
 	res.data.forEach(function(gif){
-		console.log(gif);
 		ref.child(gif.id).set({
 			id: gif.id,
 			url: gif.images.original.url,
 			frames: gif.images.original.frames,
 			height: gif.images.original.height,
 			width: gif.images.original.width,
-			spicy_rating: (Math.random() * 5),
-			tempo: 80
+			spicy_rating: Math.floor((Math.random() * 5)),
+			tempo: Math.floor((Math.random() * 40)+40)
 		}, function(err){
 			if(err){
 				console.log(err);
@@ -44,6 +39,11 @@ giphy.search({
 		
 	});
 });
+
+//   Example pulling gifs by tempo   //
+// ref.orderByChild("tempo").startAt(40).endAt(50).on("child_added", function(snapshot) {
+//   console.log(snapshot.key + " has a tempo of " + snapshot.val().tempo );
+// });
 
 //   For Image Processing   //
 // giphy.random({
@@ -72,6 +72,8 @@ giphy.search({
 
     //useful res.data: id, image_url, image_frames, image_width, image_height
 // });
+
+
 
 
 //   Thoughts on Image Processing  //
