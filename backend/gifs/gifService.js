@@ -16,6 +16,8 @@ var firebase = require('firebase');
 firebase.initializeApp(config);
 var db = firebase.database();
 var ref = db.ref("gif");
+
+
 //   Add/process gifs to db   //
 giphy.search({
     q: 'dancing',
@@ -75,7 +77,6 @@ giphy.search({
 
     //useful res.data: id, image_url, image_frames, image_width, image_height
 // });
-
 
 
 

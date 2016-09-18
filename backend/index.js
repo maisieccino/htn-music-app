@@ -3,11 +3,12 @@
 var express = require('express');
 var multer = require('multer');
 var upload = multer({ dest: './files' });
-var http = require("http");
+var http = require("http"); 
 var path = require('path');
-//var music = require('./music');
+//var music = require('/music'); //Maybe needs updated?
 var fs = require('fs');
 var app = express();
+app.use(express.static('public'));
 var firebase = require('firebase');
   var config = {
   	apiKey: "AIzaSyATRGz9jLS7KIVCnIBUPvU8_B3kpFNri_g",
@@ -23,13 +24,15 @@ var ref = db.ref("gif");
 
 app.post('/upload', upload.single('file'), function (req, res, next) {
 	var returnData;
-    var sth = music.processSong(fs.readFileSync(req.file.path));
-    //need calculated tempo, normal range between 100-160bpm
-    var musicTempo = 140;
+	 //need calculated tempo, normal range between 100-160bpm
+    var musicTempo = 140; //default
+   // var sth = music.processSong(fs.readFileSync(req.file.path));
+
 
 	var startRange = musicTempo-5;
 	var endRange = musicTempo+5;
 	ref.orderByChild("tempo").startAt(startRange).endAt(engRange).on("child_added", function(snapshot) {
+	  console.log(snapshot.key);
 	  returnData = {
         id: snapshot.key,
         url: snapshot.val().url,
@@ -50,7 +53,7 @@ app.post('/upload', function (req, res) {
 
 app.get('/', function (req, res) {
     console.log("sup");
-    return res.sendFile(path.resolve('../frontend/index.html'));
+    return res.sendFile(path.resolve('frontend/index.html'));
 });
 
 http.createServer(app).listen(80, function () {
