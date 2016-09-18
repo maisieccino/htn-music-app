@@ -12,7 +12,12 @@ var sonicApiUpload = function(song) {
             'file': song
         }
     }).on('complete', function(data, res) {
+        console.log(res);
+        console.log(data);
         return data;
+    })
+    .on('error', function (error) {
+        return error;
     });
 
 };
