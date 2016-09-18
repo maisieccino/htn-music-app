@@ -23,6 +23,7 @@ var db = firebase.database();
 var ref = db.ref("gif");
 
 app.post('/upload', upload.single('file'), function (req, res, next) {
+    console.log()
     var returnData;
     //need calculated tempo, normal range between 100-160bpm
     var musicTempo = 140; //default
