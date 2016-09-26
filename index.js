@@ -80,6 +80,6 @@ app.get('/', function (req, res) {
     return res.sendFile(path.resolve('frontend/index.html'));
 });
 
-http.createServer(app).listen(80, function () {
-    console.log('listening on 80');
+http.createServer(app).listen(process.env.PORT || 8001, function () {
+    console.log('listening');
 });
